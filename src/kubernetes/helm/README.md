@@ -46,7 +46,7 @@ helm uninstall cinemaabyss
 | `database.password`            | PostgreSQL password (base64 encoded)            | `cG9zdGdyZXNfcGFzc3dvcmQ=` |
 | `database.image.repository`    | PostgreSQL image repository                     | `postgres`      |
 | `database.image.tag`           | PostgreSQL image tag                            | `14`            |
-| `database.image.pullPolicy`    | PostgreSQL image pull policy                    | `IfNotPresent`  |
+| `database.image.pullPolicy`    | PostgreSQL image pull policy                    | `Always`  |
 | `database.resources.limits.cpu`| PostgreSQL CPU limit                            | `1000m`         |
 | `database.resources.limits.memory` | PostgreSQL memory limit                     | `1Gi`           |
 | `database.resources.requests.cpu` | PostgreSQL CPU request                       | `500m`          |
@@ -60,9 +60,9 @@ helm uninstall cinemaabyss
 | Name                           | Description                                     | Value           |
 |--------------------------------|-------------------------------------------------|-----------------|
 | `monolith.enabled`             | Enable monolith deployment                      | `true`          |
-| `monolith.image.repository`    | Monolith image repository                       | `ghcr.io/db-exp/cinemaabysstest/monolith` |
+| `monolith.image.repository`    | Monolith image repository                       | `ghcr.io/joujoy77/architecture-cinemaabyss/monolith` |
 | `monolith.image.tag`           | Monolith image tag                              | `latest`        |
-| `monolith.image.pullPolicy`    | Monolith image pull policy                      | `Always`        |
+| `monolith.image.pullPolicy`    | Monolith image pull policy                      | `Always`  |
 | `monolith.replicas`            | Number of monolith replicas                     | `1`             |
 | `monolith.resources.limits.cpu`| Monolith CPU limit                              | `500m`          |
 | `monolith.resources.limits.memory` | Monolith memory limit                       | `512Mi`         |
@@ -77,9 +77,9 @@ helm uninstall cinemaabyss
 | Name                           | Description                                     | Value           |
 |--------------------------------|-------------------------------------------------|-----------------|
 | `proxyService.enabled`         | Enable proxy service deployment                 | `true`          |
-| `proxyService.image.repository`| Proxy service image repository                  | `ghcr.io/db-exp/cinemaabysstest/proxy-service` |
+| `proxyService.image.repository`| Proxy service image repository                  | `ghcr.io/joujoy77/architecture-cinemaabyss/proxy-service` |
 | `proxyService.image.tag`       | Proxy service image tag                         | `latest`        |
-| `proxyService.image.pullPolicy`| Proxy service image pull policy                 | `Always`        |
+| `proxyService.image.pullPolicy`| Proxy service image pull policy                 | `Always`  |
 | `proxyService.replicas`        | Number of proxy service replicas                | `1`             |
 | `proxyService.resources.limits.cpu`| Proxy service CPU limit                     | `300m`          |
 | `proxyService.resources.limits.memory` | Proxy service memory limit              | `256Mi`         |
@@ -94,9 +94,9 @@ helm uninstall cinemaabyss
 | Name                           | Description                                     | Value           |
 |--------------------------------|-------------------------------------------------|-----------------|
 | `moviesService.enabled`        | Enable movies service deployment                | `true`          |
-| `moviesService.image.repository`| Movies service image repository                | `ghcr.io/db-exp/cinemaabysstest/movies-service` |
+| `moviesService.image.repository`| Movies service image repository                | `ghcr.io/joujoy77/architecture-cinemaabyss/movies-service` |
 | `moviesService.image.tag`      | Movies service image tag                        | `latest`        |
-| `moviesService.image.pullPolicy`| Movies service image pull policy               | `Always`        |
+| `moviesService.image.pullPolicy`| Movies service image pull policy               | `Always`  |
 | `moviesService.replicas`       | Number of movies service replicas               | `1`             |
 | `moviesService.resources.limits.cpu`| Movies service CPU limit                   | `300m`          |
 | `moviesService.resources.limits.memory` | Movies service memory limit            | `256Mi`         |
@@ -111,9 +111,9 @@ helm uninstall cinemaabyss
 | Name                           | Description                                     | Value           |
 |--------------------------------|-------------------------------------------------|-----------------|
 | `eventsService.enabled`        | Enable events service deployment                | `true`          |
-| `eventsService.image.repository`| Events service image repository                | `ghcr.io/db-exp/cinemaabysstest/events-service` |
+| `eventsService.image.repository`| Events service image repository                | `ghcr.io/joujoy77/architecture-cinemaabyss/events-service` |
 | `eventsService.image.tag`      | Events service image tag                        | `latest`        |
-| `eventsService.image.pullPolicy`| Events service image pull policy               | `Always`        |
+| `eventsService.image.pullPolicy`| Events service image pull policy               | `Always`  |
 | `eventsService.replicas`       | Number of events service replicas               | `1`             |
 | `eventsService.resources.limits.cpu`| Events service CPU limit                   | `300m`          |
 | `eventsService.resources.limits.memory` | Events service memory limit            | `256Mi`         |
@@ -130,7 +130,7 @@ helm uninstall cinemaabyss
 | `kafka.enabled`                | Enable Kafka deployment                         | `true`          |
 | `kafka.image.repository`       | Kafka image repository                          | `wurstmeister/kafka` |
 | `kafka.image.tag`              | Kafka image tag                                 | `2.13-2.7.0`    |
-| `kafka.image.pullPolicy`       | Kafka image pull policy                         | `IfNotPresent`  |
+| `kafka.image.pullPolicy`       | Kafka image pull policy                         | `Always`  |
 | `kafka.replicas`               | Number of Kafka replicas                        | `1`             |
 | `kafka.resources.limits.cpu`   | Kafka CPU limit                                 | `1000m`         |
 | `kafka.resources.limits.memory`| Kafka memory limit                              | `1Gi`           |
@@ -148,7 +148,7 @@ helm uninstall cinemaabyss
 | `zookeeper.enabled`            | Enable Zookeeper deployment                     | `true`          |
 | `zookeeper.image.repository`   | Zookeeper image repository                      | `wurstmeister/zookeeper` |
 | `zookeeper.image.tag`          | Zookeeper image tag                             | `latest`        |
-| `zookeeper.image.pullPolicy`   | Zookeeper image pull policy                     | `IfNotPresent`  |
+| `zookeeper.image.pullPolicy`   | Zookeeper image pull policy                     | `Always`  |
 | `zookeeper.replicas`           | Number of Zookeeper replicas                    | `1`             |
 | `zookeeper.resources.limits.cpu`| Zookeeper CPU limit                            | `500m`          |
 | `zookeeper.resources.limits.memory` | Zookeeper memory limit                     | `512Mi`         |
@@ -173,6 +173,7 @@ helm uninstall cinemaabyss
 |--------------------------------|-------------------------------------------------|-----------------|
 | `config.gradualMigration`      | Enable gradual migration                        | `true`          |
 | `config.moviesMigrationPercent`| Movies migration percentage                     | `100`           |
+| `config.kafkaBrokers`          | Kafka bootstrap servers for events service      | `kafka:9092`    |
 
 ## Architecture
 
@@ -185,6 +186,14 @@ The CinemaAbyss application consists of the following components:
 5. **PostgreSQL**: The database used by all services.
 6. **Kafka**: Message broker for event-driven communication.
 7. **Zookeeper**: Required for Kafka coordination.
+
+## Startup Ordering
+
+The chart includes small init containers so application pods wait for their runtime dependencies:
+
+- `monolith` and `movies-service` wait for PostgreSQL with `pg_isready`;
+- `events-service` waits until Kafka is reachable and `movie-events`, `user-events`, and `payment-events` exist;
+- the Kafka service uses `publishNotReadyAddresses` to avoid a startup deadlock with `KAFKA_ADVERTISED_LISTENERS=kafka:9092`.
 
 ## Persistence
 

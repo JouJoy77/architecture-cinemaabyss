@@ -48,6 +48,7 @@ spec:
       containers:
       - name: zookeeper
         image: wurstmeister/zookeeper
+        imagePullPolicy: Always
         ports:
         - containerPort: 2181
           name: client
@@ -93,6 +94,7 @@ metadata:
   labels:
     app: kafka
 spec:
+  publishNotReadyAddresses: true
   ports:
   - port: 9092
     name: kafka
@@ -130,6 +132,7 @@ spec:
       containers:
       - name: kafka
         image: wurstmeister/kafka:2.13-2.7.0
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 9092
           name: kafka
@@ -161,10 +164,19 @@ spec:
         - name: kafka-data
           mountPath: /kafka
         readinessProbe:
-          tcpSocket:
-            port: 9092
-          initialDelaySeconds: 15
+          exec:
+            command:
+            - sh
+            - -ec
+            - |
+              topics="$(kafka-topics.sh --bootstrap-server localhost:9092 --list)"
+              printf '%s\n' "$topics" | grep -qx 'movie-events'
+              printf '%s\n' "$topics" | grep -qx 'user-events'
+              printf '%s\n' "$topics" | grep -qx 'payment-events'
+          initialDelaySeconds: 20
           periodSeconds: 10
+          timeoutSeconds: 10
+          failureThreshold: 18
         livenessProbe:
           tcpSocket:
             port: 9092
