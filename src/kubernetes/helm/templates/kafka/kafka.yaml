@@ -196,7 +196,7 @@ spec:
               printf '%s\n' "$topics" | grep -qx 'payment-events'
           initialDelaySeconds: 20
           periodSeconds: 10
-          timeoutSeconds: 10
+          timeoutSeconds: 30
           failureThreshold: 18
         livenessProbe:
           tcpSocket:
