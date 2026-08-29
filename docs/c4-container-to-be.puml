@@ -1,0 +1,39 @@
+@startuml CinemaAbyss_ToBe_Containers
+!include <C4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+
+Person(customer, "Пользователь", "Смотрит фильмы, управляет подпиской, ставит оценки")
+Person(admin, "Команды Кинобездны", "Разработка, DevOps, QA, маркетинг")
+
+System_Boundary(cinema, "Кинобездна") {
+  Container(apiGateway, "Proxy Service / API Gateway", "Python, REST", "Единая точка входа. Реализует Strangler Fig и переключает трафик movies по feature flag.")
+  Container(monolith, "Legacy Monolith", "Go", "Пока обслуживает пользователей, платежи, подписки и часть старых операций.")
+  Container(movies, "Movies Service", "Go", "Метаданные фильмов, жанры, рейтинги.")
+  Container(events, "Events Service", "Python", "MVP producer/consumer событий User, Payment, Movie.")
+  ContainerDb(postgres, "PostgreSQL", "PostgreSQL", "Текущая общая БД на период миграции.")
+  ContainerQueue(kafka, "Kafka", "Kafka", "Асинхронная шина событий для новых интеграций.")
+  Container(kafkaUi, "Kafka UI", "Web UI", "Наблюдение за топиками и сообщениями.")
+}
+
+System_Ext(recommendations, "Рекомендательная система", "Внешняя система рекомендаций")
+System_Ext(payments, "Платёжные провайдеры", "Внешние платёжные системы")
+System_Ext(loyalty, "Сервисы лояльности и маркетплейсы", "Партнёрские интеграции")
+
+Rel(customer, apiGateway, "Вызывает API", "HTTPS/REST")
+Rel(admin, kafkaUi, "Проверяет топики", "HTTP")
+
+Rel(apiGateway, monolith, "Маршрутизирует legacy-домены users/payments/subscriptions", "HTTP/REST")
+Rel(apiGateway, movies, "Постепенно переводит /api/movies", "HTTP/REST + feature flag")
+Rel(apiGateway, events, "Маршрутизирует /api/events", "HTTP/REST")
+
+Rel(monolith, postgres, "Читает/пишет legacy-данные", "SQL")
+Rel(movies, postgres, "Читает/пишет метаданные фильмов", "SQL")
+Rel(events, kafka, "Публикует и читает события", "Kafka protocol")
+Rel(kafkaUi, kafka, "Отображает топики", "Kafka protocol")
+
+Rel(monolith, recommendations, "Запрашивает подборки", "HTTP")
+Rel(monolith, payments, "Проводит платежи", "HTTP/API")
+Rel(monolith, loyalty, "Обменивается данными по акциям и скидкам", "HTTP/API")
+
+@enduml

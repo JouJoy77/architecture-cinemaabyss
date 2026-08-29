@@ -110,6 +110,7 @@ metadata:
     app.kubernetes.io/name: {{ include "cinemaabyss.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
+  publishNotReadyAddresses: true
   ports:
   - port: 9092
     name: kafka
@@ -184,10 +185,19 @@ spec:
         - name: kafka-data
           mountPath: /kafka
         readinessProbe:
-          tcpSocket:
-            port: 9092
-          initialDelaySeconds: 15
+          exec:
+            command:
+            - sh
+            - -ec
+            - |
+              topics="$(kafka-topics.sh --bootstrap-server localhost:9092 --list)"
+              printf '%s\n' "$topics" | grep -qx 'movie-events'
+              printf '%s\n' "$topics" | grep -qx 'user-events'
+              printf '%s\n' "$topics" | grep -qx 'payment-events'
+          initialDelaySeconds: 20
           periodSeconds: 10
+          timeoutSeconds: 30
+          failureThreshold: 18
         livenessProbe:
           tcpSocket:
             port: 9092
